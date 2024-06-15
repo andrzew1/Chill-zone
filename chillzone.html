@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chill Zone</title>
+    <link rel="icon" href="chillzone.ico" type="image/x-icon">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: black;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            position: absolute;
+            bottom: 50px;
+            text-align: center;
+        }
+        .message {
+            background-color: gray;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .timer {
+            margin-top: 10px;
+        }
+        #fullscreen-gif {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        #music-player {
+            display: none; /* Hide the default audio controls */
+        }
+        .audio-control {
+            margin-top: 20px;
+            background-color: gray;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <img id="fullscreen-gif" src="https://i.pinimg.com/originals/f9/4d/f1/f94df1f75eb518ade0f5c608c21e36f6.gif" alt="Chill GIF">
+    <div class="container">
+        <div class="message">Welcome to da chill zone 😎</div>
+        <div class="timer">You are <span id="time">00:00:00</span> in the chill zone 🤑</div>
+        <div class="audio-control" onclick="toggleAudio()">🔊 Play/Pause Music</div>
+        <audio id="music-player" autoplay loop>
+            <source src="https://www.myinstants.com/media/sounds/minecraft-theme_q5K6toI.mp3" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <script>
+        let startTime = new Date();
+
+        function updateTime() {
+            let now = new Date();
+            let elapsed = new Date(now - startTime);
+
+            let hours = String(elapsed.getUTCHours()).padStart(2, '0');
+            let minutes = String(elapsed.getUTCMinutes()).padStart(2, '0');
+            let seconds = String(elapsed.getUTCSeconds()).padStart(2, '0');
+
+            document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateTime, 1000);
+
+        function toggleAudio() {
+            let audio = document.getElementById('music-player');
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let audio = document.getElementById('music-player');
+            audio.play().catch(error => {
+                console.error("Playback failed: ", error);
+                // User interaction required to start the audio
+                document.querySelector('.audio-control').textContent = '🔊 Click to Play Music';
+            });
+        });
+    </script>
+</body>
+</html>
+
